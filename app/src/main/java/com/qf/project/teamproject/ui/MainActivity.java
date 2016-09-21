@@ -61,21 +61,28 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         JSONObject json = new JSONObject();
         try {
             json.put("offset", 0);
+            json.put("filter", "all");
+            json.put("tab", "rec");
+            json.put("direction", "down");
             json.put("h_av", "2.7.7");
             json.put("h_dt", 0);
-            json.put("h_os", Build.VERSION.SDK_INT);
-            json.put("h_model", Build.MODEL);
-            json.put("h_did", "AD00E00E00DEE33_08:00:27");
+            //  json.put("h_os", Build.VERSION.SDK_INT);
+            json.put("h_os", 22);
+            // json.put("h_model", Build.MODEL);
+            json.put("h_model", "Google Nexus 4 - 5.1.0 - API 22 - 768x1280");
+            // json.put("h_did", "AD00E00E00DEE33_08:00:27");
+            json.put("h_did", "000000000000000_08:00:27");
             json.put("h_nt", 1);
-            json.put("h_m",6784113);
+            json.put("h_m", 6784113);
             json.put("h_ch", "qihu");
             json.put("h_ts", System.currentTimeMillis());
-            json.put("token", "57c987f9277f283a49239622");
+            // json.put("token", "57c987f9277f283a49239622");
+            json.put("token", "57de4f00277f2858c4745464");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        String url = "http://tbapi.ixiaochuan.cn/topic/attention_list";
+        String url = "http://tbapi.ixiaochuan.cn/index/recommend";
 
         url = NetCrypto.getRequestUrl(url, json);
 
@@ -95,12 +102,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onResponse(Call call, Response response) throws IOException {
                 Log.e(TAG, "onResponse: " +Thread.currentThread().getName());//不是主线程
                 String string = response.body().string();
-                System.out.println("string = " + string);
-                Message msg = mHandler.obtainMessage();
-                msg.obj=string;
-                mHandler.sendMessage(msg);
+            System.out.println("string = " + string);
+            Message msg = mHandler.obtainMessage();
+            msg.obj=string;
+            mHandler.sendMessage(msg);
 
-            }
+        }
         });
 
     }
