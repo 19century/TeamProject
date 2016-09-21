@@ -1,18 +1,28 @@
 package com.qf.project.teamproject.ui;
 
-import android.os.Build;
+
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.RadioGroup;
 
 import com.qf.project.teamproject.R;
+import com.qf.project.teamproject.fragment.FaXianFragment;
+import com.qf.project.teamproject.fragment.ShiPinFragment;
+import com.qf.project.teamproject.fragment.WoDeFragment;
+import com.qf.project.teamproject.fragment.XiaoXiFragment;
+import com.qf.project.teamproject.fragment.ZuiYouFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import cn.xiaochuankeji.netcrypto.NetCrypto;
 import okhttp3.Call;
@@ -23,16 +33,30 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends BaseActivity implements Handler.Callback {
+public class MainActivity extends BaseActivity implements Handler.Callback, RadioGroup.OnCheckedChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private Handler mHandler=new Handler(this);
+    protected RadioGroup mainRadioGroup;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initURL();
+        initView();
+    }
+
+    private void initView() {
+        mainRadioGroup = (RadioGroup) findViewById(R.id.main_radioGroup);
+        mainRadioGroup.setOnCheckedChangeListener(this);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        mFragment= new ZuiYouFragment();
+        transaction.add(R.id.main_frameLayout,mFragment,ZuiYouFragment.TAG);
+        transaction.commit();
     }
 
     private void initURL() {
@@ -118,4 +142,53 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.main_rb_zuiyou:
+                switchPages(ZuiYouFragment.TAG,ZuiYouFragment.class);
+                break;
+            case R.id.main_rb_shipin:
+                switchPages(ShiPinFragment.TAG,ShiPinFragment.class);
+                break;
+            case R.id.main_rb_faxian:
+                switchPages(FaXianFragment.TAG,FaXianFragment.class);
+                break;
+            case R.id.main_rb_xiaoxi:
+                switchPages(XiaoXiFragment.TAG,XiaoXiFragment.class);
+                break;
+            case R.id.main_rb_wode:
+                switchPages(WoDeFragment.TAG,WoDeFragment.class);
+                break;
+        }
+
+    }
+
+    private void switchPages(String tag,Class<? extends android.support.v4.app.Fragment> cls) {
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.hide(mFragment);
+        mFragment= fm.findFragmentByTag(tag);
+        if(mFragment!=null){
+            transaction.show(mFragment);
+        }else{
+
+            try {
+                mFragment=cls.getConstructor().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            transaction.add(R.id.main_frameLayout,mFragment,tag);
+        }
+        transaction.commit();
+
+
+    }
 }
