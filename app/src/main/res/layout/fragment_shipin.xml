@@ -2,10 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c615b7"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.qf.project.teamproject.fragment.ZuiYouFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <TextView
 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="#c7cac7"
+        android:text="视频"/>
+
+    <com.qf.project.teamproject.customview.PullToRefreshRecyclerView
+        android:id="@+id/pull2refresh_shipin"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/shipin_floatingab"/>
 </FrameLayout>
