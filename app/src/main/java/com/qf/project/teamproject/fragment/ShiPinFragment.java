@@ -1,5 +1,6 @@
 package com.qf.project.teamproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.qf.project.teamproject.customview.PullToRefreshRecyclerView;
 import com.qf.project.teamproject.model.FakeData;
 import com.qf.project.teamproject.model.ShiPinData;
 import com.qf.project.teamproject.model.ShiPinDataNew;
+import com.qf.project.teamproject.ui.ShiPinPlayerActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,5 +237,10 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
     public void onShiPinItemClick(int position, String data) {
         Log.e(TAG, "onShiPinItemClick: "+"position:"+position+"data:"+data );
         //跳转到视频播放界面 并传网址；
+        Intent intent = new Intent(getActivity(), ShiPinPlayerActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("PLAY_URL",data);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

@@ -174,7 +174,7 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> implements V
 //                Log.e(TAG, "onClick: image "+position1 );
                 //跳视频播放界面
                 if (listener!=null) {
-                    listener.onShiPinItemClick(position,"http://lxqncdn.miaopai.com/stream/PESLNYk8DNBJkVNwPX4Xcg__.mp4?ssig=9ea28fe482fb2e476abb859b59032bf7&time_stamp=1474508650000");
+                    listener.onShiPinItemClick(position,"http://lxqncdn.miaopai.com/stream/LCXU7zXtSLgBojQPBOCKGA__.mp4?ssig=83329c2e8a3451587fb33c0abf081dc5&time_stamp=1474533568000");
                 }
                 break;
             case R.id.shipin_item_topTitle1:
