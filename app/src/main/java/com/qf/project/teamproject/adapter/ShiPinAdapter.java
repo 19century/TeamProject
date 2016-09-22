@@ -27,6 +27,8 @@ import java.util.List;
 public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> implements View.OnClickListener {
 
     private static final String TAG = ShiPinFragment.class.getSimpleName();
+    private static final int JUMP2PLAY = 0;
+    private static final int SHARESDK = 5;
     private  List<ShiPinDataNew.DataBean.ListBean> data ;
     //缺少数据
     private LayoutInflater inflater;
@@ -169,49 +171,52 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> implements V
     public void onClick(View v) {
         Integer position = (Integer) v.getTag();
         switch (v.getId()) {
-            case R.id.shipin_item_image:
+            case R.id.shipin_item_image: //0
 //                Integer position1 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: image "+position1 );
                 //跳视频播放界面
                 if (listener!=null) {
-                    listener.onShiPinItemClick(position,"http://lxqncdn.miaopai.com/stream/LCXU7zXtSLgBojQPBOCKGA__.mp4?ssig=83329c2e8a3451587fb33c0abf081dc5&time_stamp=1474533568000");
+                    listener.onShiPinItemClick(position,JUMP2PLAY,"http://lxqncdn.miaopai.com/stream/LCXU7zXtSLgBojQPBOCKGA__.mp4?ssig=83329c2e8a3451587fb33c0abf081dc5&time_stamp=1474533568000");
                 }
                 break;
             case R.id.shipin_item_topTitle1:
             case R.id.shipin_item_touxiang:
-            case R.id.shipin_item_pinnum:
+            case R.id.shipin_item_pinnum:  //1
 //                Integer position2 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: title1 "+position2 );
                 //跳详情界面
                 break;
 
-            case R.id.shipin_item_topTitle2:
+            case R.id.shipin_item_topTitle2://2
 //                Integer position3 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: title2 "+position3 );
                 //跳个人主页
                 break;
-            case R.id.shipin_item_upArraw:
+            case R.id.shipin_item_upArraw://3
 //                Integer position4 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: upoarraw "+position4 );
                 //点一下顶 箭头颜色变深，变深后再点跳转已经顶过的人的界面
                 break;
-            case R.id.shipin_item_downArraw:
+            case R.id.shipin_item_downArraw://4
 //                Integer position5 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: downarraw "+position5 );
                 //点一下踩 箭头颜色变深，变深后再点跳转已经踩过的人的界面
                 break;
 
-            case R.id.shipin_item_sharenum:
+            case R.id.shipin_item_sharenum://5
 //                Integer position6 = (Integer) v.getTag();
 //                Log.e(TAG, "onClick: sharenum "+position6 );
                 //弹出分享
+                if (listener!=null) {
+                    listener.onShiPinItemClick(position,SHARESDK,"");
+                }
                 break;
 
         }
     }
 
     public interface OnShiPinItemClickListener{
-        void onShiPinItemClick(int position,String data);
+        void onShiPinItemClick(int position,int what,String data);
     }
 
 }

@@ -164,7 +164,7 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
             json.put("h_m", 6784113);
             json.put("h_ch", "qihu");
             json.put("h_ts", System.currentTimeMillis());
-            json.put("token", "57e24137277f285b6f140aee");
+            json.put("token", "57e38a54277f2879292ea464");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -234,13 +234,22 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
 
 
     @Override
-    public void onShiPinItemClick(int position, String data) {
+    public void onShiPinItemClick(int position,int what, String data) {
+
         Log.e(TAG, "onShiPinItemClick: "+"position:"+position+"data:"+data );
-        //跳转到视频播放界面 并传网址；
-        Intent intent = new Intent(getActivity(), ShiPinPlayerActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("PLAY_URL",data);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        switch (what) {
+            case 0:
+                //跳转到视频播放界面 并传网址；
+                Intent intent = new Intent(getActivity(), ShiPinPlayerActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("PLAY_URL",data);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case 5://分享
+
+                break;
+        }
+
     }
 }
