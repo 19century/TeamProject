@@ -15,6 +15,7 @@ import com.qf.project.teamproject.R;
 import com.qf.project.teamproject.ViewHolder.ViewHodler;
 import com.qf.project.teamproject.fragment.ShiPinFragment;
 import com.qf.project.teamproject.model.FakeData;
+import com.qf.project.teamproject.model.ShiPinData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,19 +27,19 @@ import java.util.List;
 public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
 
     private static final String TAG = ShiPinFragment.class.getSimpleName();
-    private List<FakeData> data;
+    private  List<ShiPinData.DataBean.ListBean> data ;
     //缺少数据
     private LayoutInflater inflater;
 
     private int dy;
 
     public void setDy(int dy) {
-        this.dy = dy;
+        this.dy += dy;
         Log.e(TAG, "setDy: "+dy );
     }
 
     private Context context;
-    public ShiPinAdapter(Context context,List<FakeData> data) {
+    public ShiPinAdapter(Context context, List<ShiPinData.DataBean.ListBean> data) {
         this.context=context;
         inflater=LayoutInflater.from(context);
         if (data!=null) {
@@ -77,27 +78,28 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
         ImageView downArraw = (ImageView) holder.getView(R.id.shipin_item_downArraw);
 
         //加载数据
-        topTitle1.setText(data.get(position).getTitle1());
-        topTitle2.setText(data.get(position).getTitle2());
-        time.setText(data.get(position).getTime());
-        count.setText(data.get(position).getCount());
-        name.setText(data.get(position).getName());
-        shareNum.setText(data.get(position).getShareNum());
-        pinNum.setText(data.get(position).getPinNum());
-        arrawNum.setText(data.get(position).getArrawNum());
+        ShiPinData.DataBean.ListBean listBean = data.get(position);
+        topTitle1.setText(listBean.getContent());
+        topTitle2.setText(listBean.getTopic().getTopic());
+//        time.setText();
+//        count.setText();
+        name.setText(listBean.getMember().getName());
+        shareNum.setText(listBean.getShare());
+//        pinNum.setText();
+//        arrawNum.setText();
 
         //加载图片
-        Picasso.with(context)
-                .load(data.get(position).getImage())
-                .placeholder(R.mipmap.icon_follow_empty)
-                .error(R.mipmap.icon_comment_empty)
-                .into(image);
-        Picasso.with(context)
-                .load(data.get(position).getTouxiang())
-                .placeholder(R.mipmap.icon_follow_empty)
-                .error(R.mipmap.icon_comment_empty)
-                .into(touxiang);
-        arraw.setTranslationY(dy);
+//        Picasso.with(context)
+//                .load(data.get(position).getImage())
+//                .placeholder(R.mipmap.icon_follow_empty)
+//                .error(R.mipmap.icon_comment_empty)
+//                .into(image);
+//        Picasso.with(context)
+//                .load(data.get(position).getTouxiang())
+//                .placeholder(R.mipmap.icon_follow_empty)
+//                .error(R.mipmap.icon_comment_empty)
+//                .into(touxiang);
+
 
     }
 
@@ -107,4 +109,11 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
     }
 
 
+    public void addData(List<ShiPinData.DataBean.ListBean> data) {
+        if (data!=null) {
+            this.data.clear();
+            this.data.addAll(data);
+            notifyDataSetChanged();
+        }
+    }
 }

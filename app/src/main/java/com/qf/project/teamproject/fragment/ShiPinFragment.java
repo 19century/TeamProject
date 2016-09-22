@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.qf.project.teamproject.R;
 import com.qf.project.teamproject.adapter.ShiPinAdapter;
 import com.qf.project.teamproject.customview.PullToRefreshRecyclerView;
 import com.qf.project.teamproject.model.FakeData;
+import com.qf.project.teamproject.model.ShiPinData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.xiaochuankeji.netcrypto.NetCrypto;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -72,23 +75,24 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
         recyclerView.setLayoutManager(layoutManager);
         //设置适配器
         //造假数据
-        List<FakeData> data=new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            FakeData fakeData = new FakeData();
-            fakeData.setArrawNum("点赞"+i);
-            fakeData.setCount("数量"+i);
-            fakeData.setName("张三"+i);
-            fakeData.setPinNum("评价"+i);
-            fakeData.setShareNum("分享数"+i);
-            fakeData.setTime("time"+i);
-            fakeData.setTitle1("大标题"+i);
-            fakeData.setTitle2("小标题"+i);
-            fakeData.setTouxiang("http://img0.imgtn.bdimg.com/it/u=3468736256,2070128096&fm=21&gp=0.jpg");
-            fakeData.setImage("http://img6.faloo.com/Picture/0x0/0/183/183390.jpg");
-            data.add(fakeData);
-        }
-        adapter = new ShiPinAdapter(getActivity(),data);
+//        final List<FakeData> data=new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            FakeData fakeData = new FakeData();
+//            fakeData.setArrawNum("点赞"+i);
+//            fakeData.setCount("数量"+i);
+//            fakeData.setName("张三"+i);
+//            fakeData.setPinNum("评价"+i);
+//            fakeData.setShareNum("分享数"+i);
+//            fakeData.setTime("time"+i);
+//            fakeData.setTitle1("大标题"+i);
+//            fakeData.setTitle2("小标题"+i);
+//            fakeData.setTouxiang("http://img0.imgtn.bdimg.com/it/u=3468736256,2070128096&fm=21&gp=0.jpg");
+//            fakeData.setImage("http://img6.faloo.com/Picture/0x0/0/183/183390.jpg");
+//            data.add(fakeData);
+//        }
+        adapter = new ShiPinAdapter(getActivity(),null);
         recyclerView.setAdapter(adapter);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -99,11 +103,15 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
                 Log.e(TAG, "onScrolled: "+"dx:"+dx+"dy:"+dy +Thread.currentThread().getName());
                 adapter.setDy(dy);
             }
         });
+
+
     }
+
 
     private void initURL() {
         OkHttpClient client = new OkHttpClient();
@@ -134,28 +142,24 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
         JSONObject json = new JSONObject();
         try {
             json.put("offset", 0);
-            json.put("filter", "video");
-            json.put("tab", "video");
+            json.put("filter", "all");
+            json.put("tab", "rec");
             json.put("direction", "down");
             json.put("h_av", "2.7.7");
             json.put("h_dt", 0);
-            //  json.put("h_os", Build.VERSION.SDK_INT);
             json.put("h_os", 22);
-            // json.put("h_model", Build.MODEL);
             json.put("h_model", "Google Nexus 4 - 5.1.0 - API 22 - 768x1280");
-            // json.put("h_did", "AD00E00E00DEE33_08:00:27");
             json.put("h_did", "000000000000000_08:00:27");
             json.put("h_nt", 1);
             json.put("h_m", 6784113);
             json.put("h_ch", "qihu");
             json.put("h_ts", System.currentTimeMillis());
-            // json.put("token", "57c987f9277f283a49239622");
-            json.put("token", "57c987f9277f283a49239622");
+            json.put("token", "57e24137277f285b6f140aee");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        String url = "http://tbapi.ixiaochuan.cn/index/recommend";
+         String url = "http://tbapi.ixiaochuan.cn/index/recommend";
 
         url = NetCrypto.getRequestUrl(url, json);
 
@@ -177,8 +181,12 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
                 String string = response.body().string();
 //                System.out.println("string = " + string);
                 Log.e(TAG, "onResponse: "+string );
+                Gson gson = new Gson();
+                ShiPinData shiPinData = gson.fromJson(string, ShiPinData.class);
+                ShiPinData.DataBean data = shiPinData.getData();
+                List<ShiPinData.DataBean.ListBean> list = data.getList();
                 Message msg = mHandler.obtainMessage();
-                msg.obj=string;
+                msg.obj=list;
                 mHandler.sendMessage(msg);
 
             }
@@ -188,7 +196,8 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
 
     @Override
     public boolean handleMessage(Message msg) {
-        String url = (String) msg.obj;
+        List<ShiPinData.DataBean.ListBean> data = (List<ShiPinData.DataBean.ListBean>) msg.obj;
+        adapter.addData(data);
         return false;
     }
 
