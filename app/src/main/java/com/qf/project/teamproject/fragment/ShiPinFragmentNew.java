@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,21 +17,15 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.qf.project.teamproject.R;
 import com.qf.project.teamproject.adapter.ShiPinAdapter;
 import com.qf.project.teamproject.customview.PullToRefreshRecyclerView;
-import com.qf.project.teamproject.model.FakeData;
-import com.qf.project.teamproject.model.ShiPinData;
 import com.qf.project.teamproject.model.ShiPinDataNew;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
-
 import cn.xiaochuankeji.netcrypto.NetCrypto;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -45,12 +38,12 @@ import okhttp3.Response;
  *
  *
  */
-public class ShiPinFragment extends BaseFragment implements Handler.Callback,PullToRefreshBase.OnRefreshListener2 ,ShiPinAdapter.OnShiPinItemClickListener{
+public class ShiPinFragmentNew extends BaseFragment implements Handler.Callback,PullToRefreshBase.OnRefreshListener2 {
 
     private static final int UPDATE_DATA = 0;
     private static final int ADD_DATA = 1;
     private Handler mHandler=new Handler(this);
-    public static final String TAG=ShiPinFragment.class.getSimpleName();
+    public static final String TAG=ShiPinFragmentNew.class.getSimpleName();
     protected PullToRefreshRecyclerView pull2Refresh;
     protected RecyclerView recyclerView;
     protected ShiPinAdapter adapter;
@@ -100,7 +93,7 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
 //        }
         adapter = new ShiPinAdapter(getActivity(),null);
         recyclerView.setAdapter(adapter);
-        adapter.setListener(this);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -231,9 +224,5 @@ public class ShiPinFragment extends BaseFragment implements Handler.Callback,Pul
     }
 
 
-    @Override
-    public void onShiPinItemClick(int position, String data) {
-        Log.e(TAG, "onShiPinItemClick: "+"position:"+position+"data:"+data );
-        //跳转到视频播放界面 并传网址；
-    }
+
 }

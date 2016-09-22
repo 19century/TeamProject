@@ -11,6 +11,9 @@
             android:id="@+id/shipin_item_topTitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:text="item内部标题大上"/>
         <TextView
             android:id="@+id/shipin_item_topTitle2"
@@ -28,25 +31,27 @@
             <ImageView
                 android:id="@+id/shipin_item_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="50dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:layout_marginRight="60dp"
                 android:src="@mipmap/ic_launcher"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_preview_video"
+                android:src="@mipmap/video_play_large"
                 android:layout_gravity="center"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="30dp"
                 />
             <FrameLayout
                 android:layout_gravity="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="50dp">
+                android:layout_marginRight="60dp">
                 <TextView
                     android:id="@+id/shipin_item_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#fff"
                     android:text="1.26"/>
 
                 <TextView
@@ -55,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/icon_preview_webpage"
                     android:layout_gravity="end"
+                    android:textColor="#fff"
                     android:text="130"/>
 
             </FrameLayout>
@@ -66,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/shipin_item_framlayout"
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="60dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <ImageView

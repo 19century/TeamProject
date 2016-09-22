@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.qf.project.teamproject.R;
 import com.qf.project.teamproject.ViewHolder.ViewHodler;
 import com.qf.project.teamproject.fragment.ShiPinFragment;
-import com.qf.project.teamproject.model.FakeData;
-import com.qf.project.teamproject.model.ShiPinData;
+
+import com.qf.project.teamproject.model.ShiPinDataNew;
+import com.qf.project.teamproject.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,14 +24,20 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/9/21.
  */
-public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
+public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> implements View.OnClickListener {
 
     private static final String TAG = ShiPinFragment.class.getSimpleName();
-    private  List<ShiPinData.DataBean.ListBean> data ;
+    private  List<ShiPinDataNew.DataBean.ListBean> data ;
     //缺少数据
     private LayoutInflater inflater;
-
+    private RecyclerView recyclerView;
     private int dy;
+
+    private OnShiPinItemClickListener listener;
+
+    public void setListener(OnShiPinItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public void setDy(int dy) {
         this.dy += dy;
@@ -39,7 +45,7 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
     }
 
     private Context context;
-    public ShiPinAdapter(Context context, List<ShiPinData.DataBean.ListBean> data) {
+    public ShiPinAdapter(Context context, List<ShiPinDataNew.DataBean.ListBean> data) {
         this.context=context;
         inflater=LayoutInflater.from(context);
         if (data!=null) {
@@ -78,27 +84,56 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
         ImageView downArraw = (ImageView) holder.getView(R.id.shipin_item_downArraw);
 
         //加载数据
-        ShiPinData.DataBean.ListBean listBean = data.get(position);
+        ShiPinDataNew.DataBean.ListBean listBean = data.get(position);
         topTitle1.setText(listBean.getContent());
         topTitle2.setText(listBean.getTopic().getTopic());
 //        time.setText();
 //        count.setText();
         name.setText(listBean.getMember().getName());
-        shareNum.setText(listBean.getShare());
+//        shareNum.setText(listBean.getShare());
 //        pinNum.setText();
 //        arrawNum.setText();
 
         //加载图片
-//        Picasso.with(context)
-//                .load(data.get(position).getImage())
-//                .placeholder(R.mipmap.icon_follow_empty)
-//                .error(R.mipmap.icon_comment_empty)
-//                .into(image);
-//        Picasso.with(context)
-//                .load(data.get(position).getTouxiang())
-//                .placeholder(R.mipmap.icon_follow_empty)
-//                .error(R.mipmap.icon_comment_empty)
-//                .into(touxiang);
+
+        Picasso.with(context)
+                .load("http://tbfile.ixiaochuan.cn/img/view/id/"+listBean.getImgs().get(0).getId()+"/sz/480x120")
+                .placeholder(R.mipmap.icon_follow_empty)
+                .error(R.mipmap.icon_comment_empty)
+                .into(image);
+        http://tbfile.ixiaochuan.cn/account/avatar/id/1536215
+        Picasso.with(context)
+                .load("http://tbfile.ixiaochuan.cn/account/avatar/id/"+listBean.getMember().getAvatar())
+                .placeholder(R.mipmap.icon_follow_empty)
+                .error(R.mipmap.icon_comment_empty)
+                .transform(new CircleTransform())
+                .into(touxiang);
+
+
+        //添加点击事件
+        image.setTag(position);
+        image.setOnClickListener(this);
+
+        touxiang.setTag(position);
+        touxiang.setOnClickListener(this);
+
+        shareNum.setTag(position);
+        shareNum.setOnClickListener(this);
+
+        topTitle1.setTag(position);
+        topTitle1.setOnClickListener(this);
+
+        topTitle2.setTag(position);
+        topTitle2.setOnClickListener(this);
+
+        pinNum.setTag(position);
+        pinNum.setOnClickListener(this);
+
+        upArraw.setTag(position);
+        upArraw.setOnClickListener(this);
+
+        downArraw.setTag(position);
+        downArraw.setOnClickListener(this);
 
 
     }
@@ -109,11 +144,74 @@ public class ShiPinAdapter extends RecyclerView.Adapter<ViewHodler> {
     }
 
 
-    public void addData(List<ShiPinData.DataBean.ListBean> data) {
+    public void updateData(List<ShiPinDataNew.DataBean.ListBean> data) {
         if (data!=null) {
             this.data.clear();
             this.data.addAll(data);
             notifyDataSetChanged();
         }
     }
+
+    public void addData(List<ShiPinDataNew.DataBean.ListBean> data) {
+        if (data!=null) {
+            this.data.addAll(data);
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView=recyclerView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Integer position = (Integer) v.getTag();
+        switch (v.getId()) {
+            case R.id.shipin_item_image:
+//                Integer position1 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: image "+position1 );
+                //跳视频播放界面
+                if (listener!=null) {
+                    listener.onShiPinItemClick(position,"http://lxqncdn.miaopai.com/stream/PESLNYk8DNBJkVNwPX4Xcg__.mp4?ssig=9ea28fe482fb2e476abb859b59032bf7&time_stamp=1474508650000");
+                }
+                break;
+            case R.id.shipin_item_topTitle1:
+            case R.id.shipin_item_touxiang:
+            case R.id.shipin_item_pinnum:
+//                Integer position2 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: title1 "+position2 );
+                //跳详情界面
+                break;
+
+            case R.id.shipin_item_topTitle2:
+//                Integer position3 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: title2 "+position3 );
+                //跳个人主页
+                break;
+            case R.id.shipin_item_upArraw:
+//                Integer position4 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: upoarraw "+position4 );
+                //点一下顶 箭头颜色变深，变深后再点跳转已经顶过的人的界面
+                break;
+            case R.id.shipin_item_downArraw:
+//                Integer position5 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: downarraw "+position5 );
+                //点一下踩 箭头颜色变深，变深后再点跳转已经踩过的人的界面
+                break;
+
+            case R.id.shipin_item_sharenum:
+//                Integer position6 = (Integer) v.getTag();
+//                Log.e(TAG, "onClick: sharenum "+position6 );
+                //弹出分享
+                break;
+
+        }
+    }
+
+    public interface OnShiPinItemClickListener{
+        void onShiPinItemClick(int position,String data);
+    }
+
 }
