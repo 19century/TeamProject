@@ -1,11 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0f0"
-    tools:context="com.qf.project.teamproject.fragment.ZuiYouFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="#e6e4e4"
+             tools:context="com.qf.project.teamproject.fragment.ZuiYouFragment"
+              android:gravity="center_horizontal"
+        >
 
     <!-- TODO: Update blank fragment layout -->
 
 
-</FrameLayout>
+    <android.support.design.widget.TabLayout
+            android:id="@+id/zuiyou_tablayout"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            app:tabIndicatorColor="#f00"
+            app:tabSelectedTextColor="#f00"
+            app:tabTextColor="#060606"
+            ></android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/zuoyou_ViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>
