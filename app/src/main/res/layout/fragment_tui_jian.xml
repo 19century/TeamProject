@@ -6,10 +6,12 @@
         >
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tuijian_listView"
+
+    <com.qf.project.teamproject.customview.PullToRefreshRecyclerView
+            android:id="@+id/pull2refresh_shipin"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             />
 
 </FrameLayout>

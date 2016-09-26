@@ -9,11 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cn.xiaochuankeji.netcrypto.NetCrypto;
 import com.qf.project.teamproject.R;
 import com.qf.project.teamproject.adapter.ZuiYouViewPagerAdapter;
 import com.qf.project.teamproject.fragment.zuiyoufragment.GuanZhuFragment;
 import com.qf.project.teamproject.fragment.zuiyoufragment.TuiJianFragment;
+import okhttp3.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -56,4 +61,6 @@ public class ZuiYouFragment extends BaseFragment {
 
 
     }
+
+
 }
